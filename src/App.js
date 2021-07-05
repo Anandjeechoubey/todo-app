@@ -1,24 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
 function App() {
+  const [tasks, setTask] = React.useState([]);
+  const [toAdd, setToAdd] = React.useState('');
+
+  const handleClick = () => {
+    setTask([...tasks, toAdd]);
+    setToAdd('');
+  }
+
+  const handleDelete = (e) => {
+    const { id } = e.target.parentElement;
+    const temp = tasks;
+    temp.filter(t => t.id === id);
+    setTask([...temp])
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <ul>{
+        tasks.map((task, id) => {
+          return (<li id={id}>{task} <button onClick={handleDelete}>Delete</button></li>)
+        })
+      }</ul>
+      <input type="string" value={toAdd} onChange={(e) => setToAdd(e.target.value)}></input>
+      <button onClick={handleClick}>Inc!</button>
+    </div >
   );
 }
 
